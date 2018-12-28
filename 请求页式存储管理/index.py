@@ -1,6 +1,7 @@
 import numpy as np
 import random
-from matplotlib import pyplot
+from matplotlib import pyplot as plt
+import pickle
 
 
 class MemoryBlock(object):
@@ -13,6 +14,28 @@ class MemoryBlock(object):
         self.A = []
         self.PAGE = []
         self.eliminate_Alg = None
+        self.RESULT_MAT = {}
+        self.__color_map = ['r', 'b', 'y', 'g', 'darkblue', 'darkred', 'orange', 'purple', 'brown', 'pink']
+
+    def save_data(self, file_name_append=None):
+        pickle.dump(self.RESULT_MAT, file=open(
+            './data/{}-data{}.txt'.format(self.eliminate_Alg, "" if file_name_append is None else file_name_append),
+            'wb'))
+
+    def draw_plot(self):
+        print(self.RESULT_MAT)
+        index = 1
+        for key, value in self.RESULT_MAT.items():
+            X, Y = self.RESULT_MAT[key][0], self.RESULT_MAT[key][1]
+            plt.plot(X, Y, label='page_size {}K'.format(index), c=self.__color_map[index - 1])
+            index += 1
+        plt.legend()
+
+        plt.xlabel("PAGE SIZE/K {} alg".format(self.eliminate_Alg))
+        plt.ylabel("Que ye lv")
+        plt.savefig('./img/{} plt with {}lines.png'.format(self.eliminate_Alg, index - 1))
+        plt.show()
+        self.save_data()
 
     def update_VIRTUAL_MEMORY_SIZE(self, value):
         self.VIRTUAL_MEMORY_SIZE = value
@@ -62,16 +85,26 @@ class MemoryBlock(object):
     def run_alg(self):
         print("------------- --------------"
               "\npage assigned pages_in/total references")
+        result_mat_assign = []
+        result_mat_mingzhonglv = []
         for i in range(4, 33, 2):
             self.update_assign(i)
+            result_mat_assign.append(self.assign)
             if self.eliminate_Alg == 'lru'.lower():
                 print("{}\t\t\t\t{}".format(self.assign, self.__lruAlg()))
+                result_mat_mingzhonglv.append(self.__lruAlg())
             elif self.eliminate_Alg == 'opt'.lower():
                 print("{}\t\t\t\t{}".format(self.assign, self.__optAlg()))
+                result_mat_mingzhonglv.append(self.__optAlg())
             elif self.eliminate_Alg == 'fifo'.lower():
                 print("{}\t\t\t\t{}".format(self.assign, self.__fifoAlg()))
+                result_mat_mingzhonglv.append(self.__fifoAlg())
             elif self.eliminate_Alg == 'clock'.lower():
                 print("{}\t\t\t\t{}".format(self.assign, self.__clockAlg()))
+                result_mat_mingzhonglv.append(self.__clockAlg())
+        self.RESULT_MAT[self.PAGE_SIZE] = []
+        self.RESULT_MAT[self.PAGE_SIZE].append(result_mat_assign)
+        self.RESULT_MAT[self.PAGE_SIZE].append(result_mat_mingzhonglv)
 
     def __get_defined_memory_distribution(self):
         a = [0] * self.GIVEN_ARRAY_LEN
@@ -233,8 +266,6 @@ FIFO 算法
         '''
         Queue = [None] * self.assign
         missing_page_count = 0
-        tmp = 0
-        current_Queue = None
         for i in self.PAGE:
             if i in Queue:
                 pass
@@ -260,12 +291,12 @@ FIFO 算法
         '''
         self.PAGE = [4, 3, 2, 1, 4, 3, 5, 4, 3, 2, 1, 5]
         # 例子来源于书第13题
-        # print(self.PAGE)
         self.update_assign(3)
         print("缺页率 :: {}".format(self.__lruAlg()))
         self.update_assign(4)
         print("缺页率 :: {}".format(self.__lruAlg()))
-        self.PAGE = [1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5]
+        # self.PAGE = [1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5]
+        self.PAGE = [2, 3, 2, 1, 5, 2, 4, 5, 3, 2, 5, 2]
         # 例子来自于网上
         self.update_assign(3)
         print("缺页率 :: {}".format(self.__optAlg()))
@@ -279,16 +310,14 @@ FIFO 算法
         print("缺页率 :: {}".format(self.__clockAlg()))
 
 
-def start_main(alg):
+def start_main(alg,M):
     i = 1
-    M = MemoryBlock()
-    # M.update_VIRTUAL_MEMORY_SIZE(2 ** 20)
-    M.init_with_random_num()
     M.show_page_size_and_alg(alg, 1024 * i)
     M.run_alg()
     for i in range(1, 9):
         M.change_page_size_and_alg(alg, 1024 * i)
         M.run_alg()
+    M.draw_plot()
 
 
 def start_main_with_image(alg):
@@ -302,6 +331,9 @@ def start_test():
 
 if __name__ == '__main__':
     # start_test()
+    M = MemoryBlock()
+    # M.update_VIRTUAL_MEMORY_SIZE(2 ** 20)
+    M.init_with_random_num()
     for alg in ['fifo', 'opt', 'lru', 'clock']:
-        start_main(alg)
+        start_main(alg,M)
     # print(MemoryBlock().A)
