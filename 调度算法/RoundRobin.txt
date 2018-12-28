@@ -1,0 +1,182 @@
+TYPE THE ALGORITHM:====================
+RUNNING PROC    WATING QUEUE
+1                 2 3 4 5 
+============================
+ID                1 2 3 4 5 
+PRIORITY          9 41 30 29 0 
+CPUTIME           0 0 0 0 0 
+ALLTIME           3 4 6 3 4 
+STATE             R W W W W 
+============================
+RUNNING PROC    WATING QUEUE
+2                 3 4 5 1 
+============================
+ID                2 3 4 5 1 
+PRIORITY          41 30 29 0 9 
+CPUTIME           0 0 0 0 1 
+ALLTIME           4 6 3 4 2 
+STATE             R W W W W 
+============================
+RUNNING PROC    WATING QUEUE
+3                 4 5 1 2 
+============================
+ID                3 4 5 1 2 
+PRIORITY          30 29 0 9 41 
+CPUTIME           0 0 0 1 1 
+ALLTIME           6 3 4 2 3 
+STATE             R W W W W 
+============================
+RUNNING PROC    WATING QUEUE
+4                 5 1 2 3 
+============================
+ID                4 5 1 2 3 
+PRIORITY          29 0 9 41 30 
+CPUTIME           0 0 1 1 1 
+ALLTIME           3 4 2 3 5 
+STATE             R W W W W 
+============================
+RUNNING PROC    WATING QUEUE
+5                 1 2 3 4 
+============================
+ID                5 1 2 3 4 
+PRIORITY          0 9 41 30 29 
+CPUTIME           0 1 1 1 1 
+ALLTIME           4 2 3 5 2 
+STATE             R W W W W 
+============================
+RUNNING PROC    WATING QUEUE
+1                 2 3 4 5 
+============================
+ID                1 2 3 4 5 
+PRIORITY          9 41 30 29 0 
+CPUTIME           1 1 1 1 1 
+ALLTIME           2 3 5 2 3 
+STATE             R W W W W 
+============================
+RUNNING PROC    WATING QUEUE
+2                 3 4 5 1 
+============================
+ID                2 3 4 5 1 
+PRIORITY          41 30 29 0 9 
+CPUTIME           1 1 1 1 2 
+ALLTIME           3 5 2 3 1 
+STATE             R W W W W 
+============================
+RUNNING PROC    WATING QUEUE
+3                 4 5 1 2 
+============================
+ID                3 4 5 1 2 
+PRIORITY          30 29 0 9 41 
+CPUTIME           1 1 1 2 2 
+ALLTIME           5 2 3 1 2 
+STATE             R W W W W 
+============================
+RUNNING PROC    WATING QUEUE
+4                 5 1 2 3 
+============================
+ID                4 5 1 2 3 
+PRIORITY          29 0 9 41 30 
+CPUTIME           1 1 2 2 2 
+ALLTIME           2 3 1 2 4 
+STATE             R W W W W 
+============================
+RUNNING PROC    WATING QUEUE
+5                 1 2 3 4 
+============================
+ID                5 1 2 3 4 
+PRIORITY          0 9 41 30 29 
+CPUTIME           1 2 2 2 2 
+ALLTIME           3 1 2 4 1 
+STATE             R W W W W 
+============================
+RUNNING PROC    WATING QUEUE
+1                 2 3 4 5 
+============================
+ID                1 2 3 4 5 
+PRIORITY          9 41 30 29 0 
+CPUTIME           2 2 2 2 2 
+ALLTIME           1 2 4 1 2 
+STATE             R W W W W 
+============================
+RUNNING PROC    WATING QUEUE
+3                 4 5 2 
+============================
+ID                3 4 5 2 
+PRIORITY          30 29 0 41 
+CPUTIME           2 2 2 2 
+ALLTIME           4 1 2 2 
+STATE             R W W W 
+============================
+RUNNING PROC    WATING QUEUE
+4                 5 2 3 
+============================
+ID                4 5 2 3 
+PRIORITY          29 0 41 30 
+CPUTIME           2 2 2 3 
+ALLTIME           1 2 2 3 
+STATE             R W W W 
+============================
+RUNNING PROC    WATING QUEUE
+2                 3 5 
+============================
+ID                2 3 5 
+PRIORITY          41 30 0 
+CPUTIME           2 3 2 
+ALLTIME           2 3 2 
+STATE             R W W 
+============================
+RUNNING PROC    WATING QUEUE
+3                 5 2 
+============================
+ID                3 5 2 
+PRIORITY          30 0 41 
+CPUTIME           3 2 3 
+ALLTIME           3 2 1 
+STATE             R W W 
+============================
+RUNNING PROC    WATING QUEUE
+5                 2 3 
+============================
+ID                5 2 3 
+PRIORITY          0 41 30 
+CPUTIME           2 3 4 
+ALLTIME           2 1 2 
+STATE             R W W 
+============================
+RUNNING PROC    WATING QUEUE
+2                 3 5 
+============================
+ID                2 3 5 
+PRIORITY          41 30 0 
+CPUTIME           3 4 3 
+ALLTIME           1 2 1 
+STATE             R W W 
+============================
+RUNNING PROC    WATING QUEUE
+5                 3 
+============================
+ID                5 3 
+PRIORITY          0 30 
+CPUTIME           3 4 
+ALLTIME           1 2 
+STATE             R W 
+============================
+RUNNING PROC    WATING QUEUE
+3                 
+============================
+ID                3 
+PRIORITY          30 
+CPUTIME           4 
+ALLTIME           2 
+STATE             R 
+============================
+RUNNING PROC    WATING QUEUE
+3                 
+============================
+ID                3 
+PRIORITY          30 
+CPUTIME           5 
+ALLTIME           1 
+STATE             R 
+============================
+SYSTEM FINISH
