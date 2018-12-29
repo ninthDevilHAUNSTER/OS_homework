@@ -110,7 +110,7 @@ class UFDChain(object):
             raise OSOperationError("The file must be UFD type")
 
 
-class OpenFileIndex(object):
+class AFD(object):
     def __init__(self, open_file_code=None, open_file_protect_code=None,
                  read_or_write_pointe=None, open_file_name=None):
         self.open_file_code = open_file_code
@@ -122,7 +122,7 @@ class OpenFileIndex(object):
         return self.open_file_code
 
 
-class OFIChain(object):
+class AFDChain(object):
     def __init__(self):
         self.item = [None] * 5
 
@@ -145,13 +145,13 @@ class OFIChain(object):
         raise OSOperationError("我不知道发生了啥，就是报错了")
 
 
-class AFD(object):
+class System(object):
     def __init__(self, user_MDF):
         self.__COMMAND_LIST = ["LIST", "CREATE", "DELETE", "OPEN", "CLOSE", "READ", "WRITE", "BYE", "STATE",
                                "LS", "TOUCH", "PS", "KILL", "OP", "VIM", "VI", "MV", "EXIT"]
         self.userUFD = user_MDF.file_index_pointer
         self.current_command = ""
-        self.OpenFileIndexChain = OFIChain()
+        self.AFDChain = AFDChain()
         self.user_login_flag = True
 
     def list(self):
@@ -181,7 +181,7 @@ class AFD(object):
 
     def delete(self, filename=""):
         index = 0
-        for i in self.OpenFileIndexChain.item:
+        for i in self.AFDChain.item:
             if i is not None and i.open_file_name == filename:
                 print("FIND FILE OPEN CLOSE FILE FIRST")
                 self.close(index)
@@ -198,19 +198,19 @@ class AFD(object):
     def open(self, filename=""):
         for i in self.userUFD.items:
             if i is not None and i.filename == filename:
-                index = self.OpenFileIndexChain.find_index()
+                index = self.AFDChain.find_index()
                 while 1:
                     file_mode = input("ENTER THE OPEN MODE? R<read> | W<write>")
                     # print(file_mode)
                     if "r" in file_mode.lower():
                         # pass
-                        self.OpenFileIndexChain[index] = OpenFileIndex(open_file_code=index,
+                        self.AFDChain[index] = AFD(open_file_code=index,
                                                                        open_file_protect_code=i.protect_code,
                                                                        read_or_write_pointe=0,
                                                                        open_file_name=i.filename)
                     elif "w" in file_mode.lower():
                         # pass
-                        self.OpenFileIndexChain[index] = OpenFileIndex(open_file_code=index,
+                        self.AFDChain[index] = AFD(open_file_code=index,
                                                                        open_file_protect_code=i.protect_code,
                                                                        read_or_write_pointe=1,
                                                                        open_file_name=i.filename)
@@ -226,7 +226,7 @@ class AFD(object):
         print("------------- OPEN FILE INDEX -------------")
         print("open file id\t\topen file name\t\topen file protect code\t\tread or write pointer")
         index = 0
-        for i in self.OpenFileIndexChain.item:
+        for i in self.AFDChain.item:
             if i is None:
                 print("{}\t\t\t\t{}\t\t\t\t{}\t\t\t\t{}".format(index, "*******", "***", "?"))
                 index += 1
@@ -241,20 +241,20 @@ class AFD(object):
         print("GOOD BYE")
 
     def close(self, open_file_code=0):
-        if self.OpenFileIndexChain[open_file_code] is None:
+        if self.AFDChain[open_file_code] is None:
             print("ERROR MESSAGE: NO THIS OPEN FILE !!!")
             return 0
         else:
-            self.OpenFileIndexChain[open_file_code] = None
+            self.AFDChain[open_file_code] = None
 
     def read(self, open_file_code=0):
-        if self.OpenFileIndexChain[open_file_code] is None:
+        if self.AFDChain[open_file_code] is None:
             print("ERROR MESSAGE: NO THIS OPEN FILE !!!")
             return 0
-        elif self.OpenFileIndexChain[open_file_code].open_file_protect_code[0] == '0':
+        elif self.AFDChain[open_file_code].open_file_protect_code[0] == '0':
             print("ERROR MESSAGE:IT IS NOT ALLOWED TO READ THIS FILE !!!")
             return 0
-        elif self.OpenFileIndexChain[open_file_code].read_or_write_pointer == 0:
+        elif self.AFDChain[open_file_code].read_or_write_pointer == 0:
             print("FILE CONTENT :")
             print("........................")
             # 小生的系统比较笨，只能要么读，要么写，不能两个通道一起开
@@ -263,16 +263,16 @@ class AFD(object):
             print("ERROR MESSAGE:THE FILE IS NOT OPEN FOR READ !!!")
 
     def write(self, open_file_code=0):
-        if self.OpenFileIndexChain[open_file_code] is None:
+        if self.AFDChain[open_file_code] is None:
             print("ERROR MESSAGE: NO THIS OPEN FILE !!!")
             return 0
-        elif self.OpenFileIndexChain[open_file_code].open_file_protect_code[1] == '0':
+        elif self.AFDChain[open_file_code].open_file_protect_code[1] == '0':
             print("ERROR MESSAGE:IT IS NOT ALLOWED TO READ THIS FILE !!!")
             return 0
-        elif self.OpenFileIndexChain[open_file_code].read_or_write_pointer == 1:
+        elif self.AFDChain[open_file_code].read_or_write_pointer == 1:
             # 小生的系统比较笨，只能要么读，要么写，不能两个通道一起开
             write_file_len = input("HOW MANY CHARACTERS TO BE WRITTEN INTO THAT FILE?")
-            tmp_name = self.OpenFileIndexChain[open_file_code].open_file_name
+            tmp_name = self.AFDChain[open_file_code].open_file_name
             for i in self.userUFD.items:
                 if i is not None and i.filename == tmp_name:
                     i.file_length += int(write_file_len)
@@ -384,7 +384,7 @@ while 1:
     if input_username in mdf_chain.user_index:
         print("WELCOME {}".format(input_username.upper()))
         user_login_flag = True
-        system = AFD(user_MDF=mdf_chain.MFD_chain[mdf_chain.user_index.index(input_username)])
+        system = System(user_MDF=mdf_chain.MFD_chain[mdf_chain.user_index.index(input_username)])
     else:
         continue
     while user_login_flag:
